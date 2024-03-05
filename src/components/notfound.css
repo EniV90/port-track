@@ -1,0 +1,8 @@
+.not-found-div {
+  display: flex;
+  color: var(--text-color);
+  flex-direction: column;
+  justify-content: center;
+  height: 60vh;
+  align-items: center;
+}

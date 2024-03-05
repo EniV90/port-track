@@ -1,0 +1,19 @@
+.home {
+  margin-top: 40px;
+  overflow: auto;
+  color: var(--text-color);
+}
+.content {
+  text-align: center;
+  margin: 0 auto;
+  height: auto;
+  max-width: 97%;
+  width: 1440px;
+  /* table should be centered */
+}
+.pagination-wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  margin-bottom: 15px;
+}

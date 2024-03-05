@@ -1,0 +1,90 @@
+.portfolio-coin {
+  display: grid;
+  width: 100%;
+  height: auto;
+  grid-template-columns: 6fr 4fr; /* 6fr 1fr 1fr; */
+  word-break: break-all; /* word breaks for every child */
+  margin: 5px auto;
+  padding: 5px;
+}
+.portfolio-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.portfolio-coin button {
+  fill: var(--text-color);
+  border: 1px solid black;
+  outline: none;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 34px;
+  width: 34px;
+  transition: 0.2s;
+}
+.portfolio-coin button:hover {
+  background-color: var(--navbar-button-color);
+  transition: 0.2s;
+}
+.portfolio-coin button:focus {
+  outline: 2px solid white;
+  transition: 0s;
+}
+.portfolio-coin-name {
+  text-align: left;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: left;
+}
+.portfolio-coin-holdings {
+  padding-left: 5px;
+  min-width: 140px;
+  width: auto;
+  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  align-items: center;
+}
+.portfolio-coin-total {
+  padding-left: 5px;
+  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0 0 5px;
+  align-items: center;
+  min-width: 140px;
+  width: auto;
+  text-align: left;
+}
+@media (max-width: 768px) {
+  .portfolio-buttons {
+    display: block;
+  }
+  .portfolio-coin {
+    margin: 0 auto;
+    display: flex;
+    height: auto;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--background-color);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+  }
+  .portfolio-coin-name {
+    padding: 5px;
+  }
+  .portfolio-coin-holdings {
+    min-width: auto;
+    margin: 5px;
+  }
+  .portfolio-coin-total {
+    margin-top: 5px;
+    margin: 5px;
+  }
+}

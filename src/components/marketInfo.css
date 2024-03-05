@@ -1,0 +1,14 @@
+.market-info {
+  margin: 0 auto;
+  min-height: 130px;
+  margin-bottom: 25px;
+  height: 160px;
+  width: auto;
+  max-width: 950px;
+  display: flex;
+  gap: 15px;
+  justify-content: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: left;
+}
