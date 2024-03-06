@@ -5,8 +5,9 @@ import "./index.css"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Home from "./pages/Home"
 import Crypto from "./pages/Crypto"
-import Trending from "./pages/Trending"
-import Saved from "./pages/Saved"
+import Referral from "./pages/Referral"
+
+import Wallet from "./pages/Wallet"
 import CryptoDetails from "./components/CryptoDetails"
 
 const router = createBrowserRouter([
@@ -25,8 +26,8 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/trending",
-        element: <Trending />,
+        path: "/referral",
+        element: <Referral />,
         children: [
           {
             path: ":coinId",
@@ -34,9 +35,10 @@ const router = createBrowserRouter([
           },
         ],
       },
+
       {
-        path: "/saved",
-        element: <Saved />,
+        path: "/wallet",
+        element: <Wallet />,
         children: [
           {
             path: ":coinId",
@@ -54,4 +56,3 @@ root.render(
     <RouterProvider router={router} />
   </React.StrictMode>
 )
-

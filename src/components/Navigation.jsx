@@ -25,7 +25,7 @@ ${
       </NavLink>
 
       <NavLink
-        to="/trending"
+        to="/referral"
         className={({ isActive }) => {
           return `w-full text-base text-center font-nunito m-2.5
 
@@ -37,11 +37,11 @@ ${
     border-0 cursor-pointer rounded capitalize font-semibold`
         }}
       >
-        trending
+        referral
       </NavLink>
 
       <NavLink
-        to="/saved"
+        to="/wallet"
         className={({ isActive }) => {
           return `w-full text-base text-center font-nunito m-2.5
 
@@ -53,7 +53,7 @@ ${
     border-0 cursor-pointer rounded capitalize font-semibold`
         }}
       >
-        saved
+        wallet
       </NavLink>
     </nav>
   )
