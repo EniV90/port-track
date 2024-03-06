@@ -1,35 +1,57 @@
 import React from "react"
-import { ReactDOM } from "react"
+import ReactDOM from "react-dom/client"
 import "./index.css"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { SWRConfig } from "swr"
-import Home from "./pages/Home"
-import Coin from "./pages/Coin"
-import Navbar from "./components/Navbar"
-import Tracker from "./pages/Tracker"
-import NotFound from "./components/NotFound.jsx"
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import Home from "./pages/Home"
+import Crypto from "./pages/Crypto"
+import Trending from "./pages/Trending"
+import Saved from "./pages/Saved"
+import CryptoDetails from "./components/CryptoDetails"
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+    children: [
+      {
+        path: "/",
+        element: <Crypto />,
+        children: [
+          {
+            path: ":coinId",
+            element: <CryptoDetails />,
+          },
+        ],
+      },
+      {
+        path: "/trending",
+        element: <Trending />,
+        children: [
+          {
+            path: ":coinId",
+            element: <CryptoDetails />,
+          },
+        ],
+      },
+      {
+        path: "/saved",
+        element: <Saved />,
+        children: [
+          {
+            path: ":coinId",
+            element: <CryptoDetails />,
+          },
+        ],
+      },
+    ],
+  },
+])
+
+const root = ReactDOM.createRoot(document.getElementById("root"))
+root.render(
   <React.StrictMode>
-    <SWRConfig
-      value={{
-        fetcher: (url) => fetch(url).then((r) => r.json()),
-        provider: () => new Map(),
-      }}
-    >
-      <BrowserRouter>
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/tracker" element={<Tracker />} />
-            <Route path="/coin">
-              <Route path=":coin" element={<Coin />} />
-            </Route>
-            <Route path="*" element={<NotFound />} /> 
-          </Routes>
-        </main>
-      </BrowserRouter>
-    </SWRConfig>
+    <RouterProvider router={router} />
   </React.StrictMode>
 )
+

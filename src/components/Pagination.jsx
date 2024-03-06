@@ -1,74 +1,188 @@
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import "./pagination.css";
+import { useContext, useRef } from "react";
+import paginationArrow from "../assets/pagination-arrow.svg";
+import { CryptoContext } from "../context/CryptoContext";
+import submitIcon from "../assets/submit-icon.svg";
 
-export const Pagination = () => {
-  // range of buttons to show
-  const BUTTON_AMOUNT = 10;
-  const totalPages = 100;
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [page, setPage] = useState(
-    searchParams.get("pg") ? searchParams.get("pg") : 1
-  );
-  const start = Math.max(1, page - Math.floor(BUTTON_AMOUNT / 2));
-  const end = Math.min(totalPages, start + BUTTON_AMOUNT - 1);
+const PerPage = () => {
+  const { setPerPage } = useContext(CryptoContext);
+  const inputRef = useRef(null);
 
-  useEffect(() => {
-    setSearchParams(`pg=${page}`);
-  }, [page]);
-
-  useEffect(() => {
-    // resetting the pagination state to 1 when we navigate to the page without '?pg=' params
-    if (!searchParams.has("pg")) {
-      setPage(1);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let val = inputRef.current.value;
+    if (val !== 0) {
+      setPerPage(val);
+      inputRef.current.value = val;
     }
-  }, [searchParams]);
+  };
 
   return (
-    <div className="pagination">
-      {/* Render 'Previous' button, won't render when we are at first page */}
-      {page > 1 && (
-        <button
-          className="previous-button"
-          onClick={() => {
-            setPage((state) => parseInt(state) - 1);
-            scrollTo(top);
-          }}
-        >
-          {"<"}
-        </button>
-      )}
-      {Array.from({ length: totalPages }).map((_, i) => {
-        const pageNumber = i + 1;
-
-        if (pageNumber >= start && pageNumber <= end) {
-          return (
-            <button
-              key={i}
-              onClick={() => {
-                setPage(pageNumber);
-                scrollTo(top);
-              }}
-            >
-              {pageNumber}
-            </button>
-          );
-        }
-        return null;
-      })}
-
-      {/* Render 'Next' button, won't render when we are at last page */}
-      {page < totalPages && (
-        <button
-          className="next-button"
-          onClick={() => {
-            setPage((state) => parseInt(state) + 1);
-            scrollTo(top);
-          }}
-        >
-          {">"}
-        </button>
-      )}
-    </div>
+    <form
+      className="relative flex items-center font-nunito
+          mr-12
+          "
+      onSubmit={handleSubmit}
+    >
+      <label
+        htmlFor="perpage"
+        className="relative flex justify-center items-center
+          mr-2 font-bold
+          "
+      >
+        per page:{" "}
+      </label>
+      <input
+        type="number"
+        name="perpage"
+        min={1}
+        max={250}
+        ref={inputRef}
+        placeholder="10"
+        className="w-16 rounded bg-gray-200 placeholder:text-gray-100
+     pl-2 required outline-0 border border-transparent 
+     focus:border-cyan leading-4
+     "
+      />
+      <button type="submit" className="ml-1 cursor-pointer">
+        <img src={submitIcon} alt="submit" className="w-full h-auto" />
+      </button>
+    </form>
   );
 };
+
+const Pagination = () => {
+  let { page, setPage, totalPages, perPage, cryptoData } =
+    useContext(CryptoContext);
+
+  const TotalNumber = Math.ceil(totalPages / perPage);
+
+  const next = () => {
+    if (page === TotalNumber) {
+      return null;
+    } else {
+      setPage(page + 1);
+    }
+  };
+
+  const prev = () => {
+    if (page === 1) {
+      return null;
+    } else {
+      setPage(page - 1);
+    }
+  };
+
+  const multiStepNext = () => {
+    if (page + 3 >= TotalNumber) {
+      setPage(TotalNumber - 1);
+    } else {
+      setPage(page + 3);
+    }
+  };
+
+  const multiStepPrev = () => {
+    if (page - 3 <= 1) {
+      setPage(TotalNumber + 1);
+    } else {
+      setPage(page - 2);
+    }
+  };
+
+  if (cryptoData && cryptoData.length >= perPage) {
+    return (
+      <div className="flex items-center">
+        <PerPage />
+        <ul className="flex items-center justify-end text-sm">
+          <li className="flex items-center">
+            <button className="outline-0 hover:text-cyan w-8" onClick={prev}>
+              <img
+                className="w-full h-auto rotate-180"
+                src={paginationArrow}
+                alt="left"
+              />
+            </button>
+          </li>
+
+          {page + 1 === TotalNumber || page === TotalNumber ? (
+            <li>
+              {" "}
+              <button
+                onClick={multiStepPrev}
+                className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center text-lg    "
+              >
+                ...
+              </button>
+            </li>
+          ) : null}
+
+          {page - 1 !== 0 ? (
+            <li>
+              <button
+                onClick={prev}
+                className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center bg-gray-200 mx-1.5"
+              >
+                {" "}
+                {page - 1}{" "}
+              </button>
+            </li>
+          ) : null}
+          <li>
+            <button
+              disabled
+              className="ouline-0  rounded-full w-8 h-8 flex items-center justify-center bg-cyan text-gray-300 mx-1.5"
+            >
+              {page}
+            </button>
+          </li>
+
+          {page + 1 !== TotalNumber && page !== TotalNumber ? (
+            <li>
+              <button
+                onClick={next}
+                className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center bg-gray-200 mx-1.5"
+              >
+                {page + 1}
+              </button>
+            </li>
+          ) : null}
+
+          {page + 1 !== TotalNumber && page !== TotalNumber ? (
+            <li>
+              {" "}
+              <button
+                onClick={multiStepNext}
+                className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center text-lg    "
+              >
+                ...
+              </button>
+            </li>
+          ) : null}
+
+          {page !== TotalNumber ? (
+            <li>
+              <button
+                onClick={() => setPage(TotalNumber)}
+                className="ouline-0 hover:text-cyan  rounded-full w-8 h-8 flex items-center justify-center bg-gray-200 mx-1.5"
+              >
+                {TotalNumber}
+              </button>
+            </li>
+          ) : null}
+          <li>
+            <button className="outline-0 hover:text-cyan w-8" onClick={next}>
+              <img
+                className="w-full h-auto"
+                src={paginationArrow}
+                alt="right"
+              />
+            </button>
+          </li>
+        </ul>
+      </div>
+    );
+  } else {
+    return null;
+  }
+};
+
+export default Pagination;
